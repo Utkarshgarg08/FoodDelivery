@@ -1,0 +1,136 @@
+<div class="container">
+  <div class="header">
+    <img src="assets/images/logo.jpg" height="75px" width="75px" class="logo" />
+    <div class="login">Login</div>
+  </div>
+
+  <div class="search-box">
+    <input
+      class="search"
+      placeholder="Search for your food....."
+      [(ngModel)]="searchedFood"
+      (change)="filterByValue()"
+    />
+
+    <button class="filter-btn" (click)="showFilterpopup()">
+      <i class="fa fa-sliders"></i> Filter
+    </button>
+    <!-- <i class="fa fa-search"></i> -->
+  </div>
+
+  <div class="menu-container">
+    <div class="menu-box" *ngFor="let food of foodObj">
+      <img
+        class="menu-img"
+        height="220px"
+        width="270px"
+        src="{{ food.image }}"
+      />
+      <hr />
+      <div>
+        <div class="menu-item-name">{{ food.name }}</div>
+        <div>
+          <span class="menu-item-price">Rs. {{ food.price }}</span>
+          <button class="menu-add-btn" (click)="add(food)">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="order-cart">
+    <div class="cart-heading">Your items : {{ purchasedItem.length }}</div>
+    <div class="selected-item">
+      <div *ngFor="let item of purchasedItem" class="items">
+        <span>{{ item.name }}</span>
+        <span style="float: right">Rs. {{ item.price }}</span>
+      </div>
+    </div>
+    <hr />
+    <div class="selected-item">
+      <div class="items">
+        <span>Subtotal</span>
+        <span style="float: right">Rs. {{ subtotal }}</span>
+        <br />
+        <br />
+        <span>CGST @ 2.5%</span>
+        <span style="float: right">Rs. {{ tax }}</span>
+        <br />
+        <span>SGST @ 2.5%</span>
+        <span style="float: right">Rs. {{ tax }}</span>
+        <br />
+        <div *ngIf="discountFlag">
+          <span>Discount</span>
+          <span style="float: right">Rs. {{ discountPrice }}</span>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="selected-item">
+      <div class="items">
+        <input
+          class="code"
+          placeholder="Search for your food....."
+          [(ngModel)]="couponCode"
+        />
+        <button class="menu-add-btn apply-btn" (click)="applyCoupon()">
+          Apply
+        </button>
+        <br />
+        <span style="color: rgb(255, 60, 0)">
+          User DISC10 to avil 10% Discount</span
+        >
+        <br />
+      </div>
+    </div>
+    <hr />
+    <div class="selected-item">
+      <div class="items">
+        <span>Total</span>
+        <span style="float: right">Rs. {{ TotalPrice }}</span>
+      </div>
+    </div>
+    <button class="clear-cart-btn" (click)="clearCart()">Clear Cart</button>
+    <div class="cart-heading proceed" (click)="showOrderpopup()">
+      Proceed to checkout
+    </div>
+  </div>
+</div>
+<!-- The Modal -->
+<div *ngIf="showFilter" id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span (click)="showFilterpopup()" class="close">&times;</span>
+    <input
+      type="radio"
+      id="pricelow"
+      name="pricelow"
+      value="pricelow"
+      (change)="sortMenu('price')"
+    />
+    <label for="pricelow">Cost: Low to High</label><br />
+    <input
+      type="radio"
+      id="rating"
+      name="rating"
+      value="rating"
+      (change)="sortMenu('rating')"
+    />
+    <label for="rating">Rating: Low to High</label><br />
+  </div>
+</div>
+
+<div *ngIf="showdeliveryPopup" id="myModalmy" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content-order">
+    <span (click)="showOrderpopup()" class="close">&times;</span>
+    <h3>Your Order</h3>
+    <hr>
+    <div *ngFor="let item of purchasedItem" class="items">
+      <span>{{ item.name }}</span>
+    </div>
+    <hr>
+    <div>Your order will be delivered in {{deliveryTime}} minutes</div>
+  </div>
+</div>
+
+<footer class="footer">All Rights Reserved</footer>
